@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import List from "./list";
-import SearchPanel from "./search-panel";
+import SearchPanel, { SearchParams } from "./search-panel";
 import { cleanObject, useDebounce, useMount } from "../../utils";
 import qs from "qs";
+
+
 
 const apiUrl = process.env.REACT_APP_API_URL;
 const ProjectListScreen = () => {
   //要查找的内容，一个是输入框键入的name，一个是select选择的人的id
-  const [param, setParam] = useState({
+  const [param, setParam] = useState<SearchParams>({
     name: "",
     personId: "",
   });

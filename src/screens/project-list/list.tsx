@@ -1,6 +1,10 @@
-import React from 'react'
-
-const List = ({ list, users }) => {
+import React, { PropsWithChildren } from 'react'
+import { User } from './search-panel';
+type ListProps = {
+    list: any[];
+    users: User[]
+}
+const List: React.FC<PropsWithChildren<ListProps>> = ({ list, users }) => {
     return (
         <table>
             <thead>

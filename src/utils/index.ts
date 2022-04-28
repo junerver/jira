@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-export const isFalsy = (value) => (value === 0 ? false : !value);
+export const isFalsy = (value:any) => (value === 0 ? false : !value);
 
 //在js中函数传入对象是一个不好的方式，因为函数可能会污染对象
-export const cleanObject = (obj) => {
+export const cleanObject = (obj:any) => {
   //浅拷贝
-  const result = { ...obj };
+  const result:any = { ...obj };
   //清除对象中的空值
   Object.keys(result).forEach((key) => {
     const value = result[key];
@@ -17,7 +17,7 @@ export const cleanObject = (obj) => {
 };
 
 //自定义的仅在初始化时加载一次的钩子
-export const useMount = (callback) => {
+export const useMount = (callback:()=>void) => {
   useEffect(() => {
     callback();
   }, []);
@@ -41,7 +41,7 @@ export const useMount = (callback) => {
 // log();
 
 //将一个抖动的state传入，返回一个去抖的state
-export const useDebounce = (value, delay) => {
+export const useDebounce = (value:any, delay?:number) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
   useEffect(() => {
     const handler = setTimeout(() => {
