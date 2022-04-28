@@ -13,7 +13,7 @@ const ProjectListScreen = () => {
     name: "",
     personId: "",
   });
-  const debounceParam = useDebounce(param, 2000);
+  const debounceParam = useDebounce(param, 500);
   //下拉列表的状态
   const [users, setUsers] = useState([]);
   //查询结果的状态

@@ -1,23 +1,25 @@
 import { useState, useEffect } from "react";
-export const isFalsy = (value:any) => (value === 0 ? false : !value);
+export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
+export const isVoid = (value: unknown) => value === undefined || value === null || value === "";
 
 //在js中函数传入对象是一个不好的方式，因为函数可能会污染对象
-export const cleanObject = (obj:any) => {
+export const cleanObject = (obj?: { [key: string]: unknown }) => {
+  //空对象直接返回
+  if (!obj) return {};
   //浅拷贝
-  const result:any = { ...obj };
+  const result = { ...obj };
   //清除对象中的空值
   Object.keys(result).forEach((key) => {
     const value = result[key];
-    if (isFalsy(value)) {
+    if (isVoid(value)) {
       delete result[key];
     }
   });
-  //返回值是一个新对象
   return result;
 };
 
 //自定义的仅在初始化时加载一次的钩子
-export const useMount = (callback:()=>void) => {
+export const useMount = (callback: () => void) => {
   useEffect(() => {
     callback();
   }, []);
@@ -41,7 +43,7 @@ export const useMount = (callback:()=>void) => {
 // log();
 
 //将一个抖动的state传入，返回一个去抖的state
-export const useDebounce = (value:any, delay?:number) => {
+export const useDebounce = <T>(value: T, delay?: number) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -53,3 +55,18 @@ export const useDebounce = (value:any, delay?:number) => {
   }, [value, delay]);
   return debouncedValue;
 };
+
+//一个方便的操作数组的钩子
+export const useArray = <T>(initialValue: T[]) => {
+  const [value, setValue] = useState(initialValue);
+  const add = (item: T) => {
+    setValue([...value, item]);
+  };
+  const clear = () => {
+    setValue([]);
+  }
+  const remove = (index: number) => {
+    setValue(value.filter((_, i) => i !== index));
+  };
+  return { value, clear, add, remove };
+}
