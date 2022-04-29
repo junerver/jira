@@ -12,23 +12,25 @@ export const handleUserResponse = ({ user }: { user: User }) => {
     return user;
 }
 export const login = (data: { username: string, password: string }) => {
-    fetch(
+    return fetch(
         `${apiUrl}/login`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
-    }
-    ).then(async (res) => {
+    }).then(async (res) => {
         if (res.ok) {
             return handleUserResponse(await res.json());
+        } else {
+            // throw new Error('Login failed');
+            return Promise.reject('Login failed')
         }
     });
 }
 
 export const register = (data: { username: string, password: string }) => {
-    fetch(
+    return fetch(
         `${apiUrl}/register`, {
         method: 'POST',
         headers: {
@@ -39,8 +41,10 @@ export const register = (data: { username: string, password: string }) => {
     ).then(async (res) => {
         if (res.ok) {
             return handleUserResponse(await res.json());
+        } else {
+            return Promise.reject('Register failed')
         }
     });
 }
 
-export const logout = () => window.localStorage.removeItem(localStorageKey);
+export const logout = async () => window.localStorage.removeItem(localStorageKey);
