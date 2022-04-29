@@ -3,6 +3,7 @@ import List from "./list";
 import SearchPanel, { SearchParams } from "./search-panel";
 import { cleanObject, useDebounce, useMount } from "../../utils";
 import qs from "qs";
+import { useHttp } from "utils/http";
 
 
 
@@ -18,22 +19,25 @@ const ProjectListScreen = () => {
   const [users, setUsers] = useState([]);
   //查询结果的状态
   const [list, setList] = useState([]);
+  const client = useHttp()
   //输入变化后请求接口
   useEffect(() => {
-    fetch(
-      `${apiUrl}/projects?${qs.stringify(cleanObject(debounceParam))}`
-    ).then(async (res) => {
-      if (res.ok) {
-        setList(await res.json());
-      }
-    });
+    client('projects', { data: cleanObject(debounceParam) }).then(setList)
+    // fetch(
+    //   `${apiUrl}/projects?${qs.stringify(cleanObject(debounceParam))}`
+    // ).then(async (res) => {
+    //   if (res.ok) {
+    //     setList(await res.json());
+    //   }
+    // });
   }, [debounceParam]);
   useMount(() => {
-    fetch(`${apiUrl}/users`).then(async (res) => {
-      if (res.ok) {
-        setUsers(await res.json());
-      }
-    });
+    client('users').then(setUsers)
+    // fetch(`${apiUrl}/users`).then(async (res) => {
+    //   if (res.ok) {
+    //     setUsers(await res.json());
+    //   }
+    // });
   });
   return (
     <div>

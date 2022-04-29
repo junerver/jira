@@ -1,10 +1,22 @@
 import React, { useState } from 'react'
 import * as auth from '../auth-provider'
 import { User } from 'screens/project-list/search-panel'
+import { http } from 'utils/http'
+import { useMount } from 'utils'
 
 interface AuthForm {
     username: string,
     password: string
+}
+
+const bootstrapUser = async () => {
+    let user = null
+    const token = auth.getToken()
+    if (token) {
+        const data = await http('me', { token })
+        user = data.user
+    }
+    return user
 }
 
 //创建一个Context
@@ -25,6 +37,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     //传入参数与后一个单语句的函数传入参数一致的话，可以消参 point free
     const register = (form: AuthForm) => auth.register(form).then(setUser)
     const logout = () => auth.logout().then(() => setUser(null))
+    useMount(() => {
+        bootstrapUser().then(setUser)
+    })
     return <AuthContext.Provider children={children} value={{ user, login, register, logout }} />
 }
 
