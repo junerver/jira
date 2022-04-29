@@ -1,14 +1,15 @@
 
+import { AuthorizedApp } from 'authorized-app';
+import { useAuth } from 'context/auth-context';
+import { UnauthorizedApp } from 'unauthorized-app';
 import './App.css';
-import LoginScreen from './screens/login';
-import ProjectListScreen from './screens/project-list';
-import TestUseArray from './test/test-use-array';
+
 
 function App() {
+  const { user } = useAuth()
   return (
-    <div>
-      {/* <ProjectListScreen /> */}
-      <LoginScreen />
+    <div className='App'>
+      {user ? <AuthorizedApp /> : <UnauthorizedApp />}
     </div>
   );
 }
