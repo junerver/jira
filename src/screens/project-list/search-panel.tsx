@@ -7,6 +7,10 @@ export type SearchParams = {
 export type User = {
     id: string;
     name: string;
+    email: string;
+    title: string;
+    organization: string;
+    token: string;
 }
 
 type SearchPanelProps = {
