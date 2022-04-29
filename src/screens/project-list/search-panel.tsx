@@ -1,3 +1,4 @@
+import { Input, Select } from "antd";
 import React, { PropsWithChildren } from "react";
 
 export type SearchParams = {
@@ -23,22 +24,23 @@ const SearchPanel: React.FC<PropsWithChildren<SearchPanelProps>> = ({ users, par
     return (
         <div>
             <form>
-                <input
+                <Input
                     type="text"
                     value={param.name}
                     onChange={(e) => setParam({ ...param, name: e.target.value })}
                 />
-                <select
+                <Select
                     value={param.personId}
-                    onChange={(e) => setParam({ ...param, personId: e.target.value })}
-                >
-                    <option value="">Select a person</option>
+                    onChange={(value) => setParam({ ...param, personId: value })}>
+
+                    <Select.Option value="">负责人</Select.Option>
+
                     {users.map((user: User) => (
-                        <option key={user.id} value={user.id}>
+                        <Select.Option key={user.id} value={user.id}>
                             {user.name}
-                        </option>
+                        </Select.Option>
                     ))}
-                </select>
+                </Select>
             </form>
         </div>
     );

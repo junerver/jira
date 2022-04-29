@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@craco/craco": "^6.4.3",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.1.1",
     "@testing-library/user-event": "^13.5.0",
@@ -10,6 +11,9 @@
     "@types/node": "^16.11.31",
     "@types/react": "^18.0.8",
     "@types/react-dom": "^18.0.0",
+    "antd": "^4.20.1",
+    "babel-plugin-import": "^1.13.5",
+    "craco-less": "^2.0.0",
     "jira-dev-tool": "^1.7.61",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
@@ -18,9 +22,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
     "eject": "react-scripts eject",
     "json-server": "json-server ./__json_server_mock__/db.json --watch --port 3001 --middlewares ./__json_server_mock__/middleware.js"
   },

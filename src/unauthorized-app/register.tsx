@@ -1,34 +1,37 @@
 import { FormEvent } from 'react'
 import { useAuth } from 'context/auth-context';
+import { Form, Input, Button } from 'antd';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 const RegisterScreen = () => {
     const { register, user } = useAuth()
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-        //阻止默认行为
-        e.preventDefault()
-        console.log('submit')
-        const username = (e.currentTarget.elements[0] as HTMLInputElement).value
-        const password = (e.currentTarget.elements[1] as HTMLInputElement).value
+    const handleSubmit = ({ username, password }: { username: string, password: string }) => {
+
         register({ username, password })
     }
 
 
 
     return (
-        <form onSubmit={handleSubmit}>
+        <Form onFinish={handleSubmit}>
             {user ? <div>注册成功，用户名为：{user?.name}</div> : null}
 
-            <div>
-                <label htmlFor="username">Username</label>
-                <input type="text" id="username" />
-            </div>
-            <div>
-                <label htmlFor="password">Password</label>
-                <input type="password" id="password" />
-            </div>
-            <button type='submit'>注册</button>
-        </form>
+
+            <Form.Item name="username" rules={[{ required: true, message: '请输入密码' }]}>
+                <Input placeholder='用户名' type="text" id="username" />
+            </Form.Item>
+
+
+
+            <Form.Item name="password" rules={[{ required: true, message: '请输入密码' }]}>
+                <Input placeholder='密码' type="password" id="password" />
+            </Form.Item>
+
+            <Form.Item>
+                <Button htmlType='submit' type='primary' >注册</Button>
+            </Form.Item>
+
+        </Form>
     )
 }
 
