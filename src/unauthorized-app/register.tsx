@@ -1,6 +1,7 @@
 import { FormEvent } from 'react'
 import { useAuth } from 'context/auth-context';
 import { Form, Input, Button } from 'antd';
+import { LongButton } from 'unauthorized-app';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 const RegisterScreen = () => {
@@ -28,7 +29,7 @@ const RegisterScreen = () => {
             </Form.Item>
 
             <Form.Item>
-                <Button htmlType='submit' type='primary' >注册</Button>
+                <LongButton htmlType='submit' type='primary' >注册</LongButton>
             </Form.Item>
 
         </Form>
