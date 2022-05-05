@@ -4,6 +4,7 @@ import SearchPanel, { SearchParams } from "./search-panel";
 import { cleanObject, useDebounce, useMount } from "../../utils";
 import qs from "qs";
 import { useHttp } from "utils/http";
+import styled from "@emotion/styled";
 
 
 
@@ -23,28 +24,21 @@ const ProjectListScreen = () => {
   //输入变化后请求接口
   useEffect(() => {
     client('projects', { data: cleanObject(debounceParam) }).then(setList)
-    // fetch(
-    //   `${apiUrl}/projects?${qs.stringify(cleanObject(debounceParam))}`
-    // ).then(async (res) => {
-    //   if (res.ok) {
-    //     setList(await res.json());
-    //   }
-    // });
-  }, [debounceParam]);
+  }, [client, debounceParam]);
   useMount(() => {
     client('users').then(setUsers)
-    // fetch(`${apiUrl}/users`).then(async (res) => {
-    //   if (res.ok) {
-    //     setUsers(await res.json());
-    //   }
-    // });
   });
   return (
-    <div>
+    <Container>
+      <h1>项目列表</h1>
       <SearchPanel param={param} setParam={setParam} users={users} />
       <List list={list} users={users} />
-    </div>
+    </Container>
   );
 };
 
 export default ProjectListScreen;
+
+const Container = styled.div`
+    padding: 3.2rem;
+`

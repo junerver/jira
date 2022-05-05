@@ -4,10 +4,13 @@ import { useAuth } from 'context/auth-context';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
+//扩展Request
 interface Config extends RequestInit {
     data?: object;
     token?: string;
 }
+
+//封装fetch
 export const http = async (endpoint: string, { data, token, headers, ...customConfig }: Config = {}) => {
     const config = {
         method: 'GET',
@@ -17,7 +20,7 @@ export const http = async (endpoint: string, { data, token, headers, ...customCo
         },
         ...customConfig
     }
-
+    //判断method
     if (config.method.toUpperCase() === 'GET') {
         endpoint = `${endpoint}?${qs.stringify(data)}`;
     } else {
@@ -42,8 +45,9 @@ export const http = async (endpoint: string, { data, token, headers, ...customCo
 }
 
 export const useHttp = () => {
+    //通过useAuth钩子拿到用户信息
     const { user } = useAuth()
     // return ([endpoint, config]: [string, Config]) => http(endpoint, { ...config, token: user?.token });
-
+    //封装网络请求，给每个请求加上token字段
     return (...[endpoint, config]: Parameters<typeof http>) => http(endpoint, { ...config, token: user?.token });
 }
