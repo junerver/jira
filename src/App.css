@@ -4,7 +4,7 @@ html {
   font-size: 62.5%;
 }
 
-/* viewport height = vh 1vh = 1% */
+/* viewport视口高度 height = vh 1vh = 1% */
 html body #root .App {
   min-height: 100vh;
 }

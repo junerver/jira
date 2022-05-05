@@ -72,4 +72,4 @@ const Container = styled.div`
     align-items: center;
     min-height: 100vh;
     justify-content: center;
-    `
+`
