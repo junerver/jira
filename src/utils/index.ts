@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
+// export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
 export const isVoid = (value: unknown) => value === undefined || value === null || value === "";
 
 //在js中函数传入对象是一个不好的方式，因为函数可能会污染对象
@@ -22,6 +22,8 @@ export const cleanObject = (obj?: { [key: string]: unknown }) => {
 export const useMount = (callback: () => void) => {
   useEffect(() => {
     callback();
+    //todo 此处不能把callback加入依赖 这与useCallback&useMemo有关
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 };
 

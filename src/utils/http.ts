@@ -44,6 +44,8 @@ export const http = async (endpoint: string, { data, token, headers, ...customCo
         })
 }
 
+//扩展http，调用useAuth钩子获取到用户token，并将token传递给http，
+//这样调用时如果需要传递token，直接使用useHttp即可
 export const useHttp = () => {
     //通过useAuth钩子拿到用户信息
     const { user } = useAuth()

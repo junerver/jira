@@ -3,7 +3,7 @@ import { Row } from "components/lib";
 import { useAuth } from "context/auth-context";
 import ProjectListScreen from "screens/project-list";
 import { ReactComponent as SoftwareLogo } from 'assets/software-logo.svg'
-import { Dropdown, Menu } from "antd";
+import { Button, Dropdown, Menu } from "antd";
 
 export const AuthorizedApp = () => {
     const { logout, user } = useAuth()
@@ -18,11 +18,12 @@ export const AuthorizedApp = () => {
                 <Dropdown overlay={(
                     <Menu>
                         <Menu.Item key='logout'>
-                            <a onClick={() => logout()}>退出</a>
+                            <Button type="link" onClick={() => logout()}>退出</Button>
                         </Menu.Item>
                     </Menu>
                 )}>
-                    <a onClick={e => e.preventDefault()}>Hi,{user?.name}</a>
+                    <Button type="link" onClick={e => e.preventDefault()}>Hi,{user?.name}</Button>
+
                 </Dropdown>
 
             </HeaderRight>

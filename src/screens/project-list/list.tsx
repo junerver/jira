@@ -1,4 +1,4 @@
-import { Table } from 'antd';
+import { Table, TableProps } from 'antd';
 import dayjs from 'dayjs';
 import React, { PropsWithChildren } from 'react'
 import { User } from './search-panel';
@@ -11,17 +11,20 @@ type Project = {
     organization: string,
     created: number;
 }
+//扩展TableProps，增加users
 type ListProps = {
-    list: Project[];
     users: User[]
-}
-const List: React.FC<PropsWithChildren<ListProps>> = ({ list, users }) => {
+} & TableProps<Project>
+
+const List: React.FC<PropsWithChildren<ListProps>> = ({ users, ...props }) => {
     return (
         <Table
+            //透传 antd的props
+            {...props}
+            //每一行的key
+            rowKey="id"
             // 是否分页
             pagination={false}
-            //数据源
-            dataSource={list}
             //渲染的列
             columns={[
                 {
@@ -35,15 +38,15 @@ const List: React.FC<PropsWithChildren<ListProps>> = ({ list, users }) => {
                 },
                 {
                     title: '项目负责人',
-                    render(value, project) {
+                    render(_, project) {
                         return <span key={project.id}> {users.find(user => user.id === project.personId)?.name || "未知"}</span>
                     }
                 },
                 {
                     title: '创建时间',
-                    render(value, record, index) {
+                    render(_, project) {
                         return <span>
-                            {record.created ? dayjs(record.created).format("YYYY-MM-DD") : '未知时间'}
+                            {project.created ? dayjs(project.created).format("YYYY-MM-DD") : '未知时间'}
                         </span>
                     },
                 },]} />
