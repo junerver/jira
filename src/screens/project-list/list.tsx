@@ -1,6 +1,8 @@
+import { render } from '@testing-library/react';
 import { Table, TableProps } from 'antd';
 import dayjs from 'dayjs';
 import React, { PropsWithChildren } from 'react'
+import { Link } from 'react-router-dom';
 import { User } from './search-panel';
 
 export type Project = {
@@ -29,8 +31,12 @@ const List: React.FC<PropsWithChildren<ListProps>> = ({ users, ...props }) => {
             columns={[
                 {
                     title: '项目名称',
-                    dataIndex: 'name',
-                    sorter: (a, b) => a.name.localeCompare(b.name)
+                    sorter: (a, b) => a.name.localeCompare(b.name),
+                    render(_, project) {
+                        return (
+                            <Link to={`${project.id}`}>{project.name}</Link>
+                        )
+                    }
                 },
                 {
                     title: '部门',
