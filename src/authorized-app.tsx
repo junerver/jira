@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Row } from "components/lib";
+import { CenterButton, Row } from "components/lib";
 import { useAuth } from "context/auth-context";
 import ProjectListScreen from "screens/project-list";
 import { ReactComponent as SoftwareLogo } from 'assets/software-logo.svg'
@@ -7,6 +7,7 @@ import { Button, Dropdown, Menu } from "antd";
 import { Navigate, Route, Routes } from 'react-router'
 import { ProjectScreen } from "screens/project";
 import { BrowserRouter } from 'react-router-dom';
+import { resetRoute } from "utils";
 
 export const AuthorizedApp = () => {
 
@@ -19,7 +20,7 @@ export const AuthorizedApp = () => {
                         {/* 项目列表 */}
                         <Route index element={<Navigate to="/projects" />} />
                         <Route path="/projects" element={<ProjectListScreen />} />
-                        <Route path="/projects/:projectId" element={<ProjectScreen />} />
+                        <Route path="/projects/:projectId/*" element={<ProjectScreen />} />
                     </Routes>
                 </BrowserRouter>
 
@@ -32,7 +33,10 @@ const PageHeader = () => {
     return (
         <Header between={true}>
             <HeaderLeft gap={true}>
-                <SoftwareLogo width={'18rem'} color={'rgb(38,132,255)'} />
+                <CenterButton type="link" onClick={resetRoute}>
+                    <SoftwareLogo width={'18rem'} color={'rgb(38,132,255)'} />
+                </CenterButton>
+
                 <h3>项目</h3>
                 <h3>用户</h3>
             </HeaderLeft>

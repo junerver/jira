@@ -36,10 +36,6 @@ export const UnauthorizedApp = () => {
     )
 }
 
-export const LongButton = styled(Button)`
-    width: 100%;
-`
-
 const Background = styled.div`
     position: absolute;
     width: 100%;

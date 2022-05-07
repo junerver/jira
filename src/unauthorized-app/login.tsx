@@ -1,6 +1,6 @@
 import { useAuth } from 'context/auth-context';
 import { Form, Input, Button } from 'antd';
-import { LongButton } from 'unauthorized-app';
+import { LongButton } from 'components/lib';
 import { type } from '@testing-library/user-event/dist/type';
 import { useAsync } from 'utils/use-async';
 
