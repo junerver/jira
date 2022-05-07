@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 // export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
 export const isVoid = (value: unknown) => value === undefined || value === null || value === "";
 
@@ -73,9 +73,26 @@ export const useArray = <T>(initialValue: T[]) => {
   return { value, clear, add, remove };
 }
 
+//实现方式1，通过闭包实现了保存了旧的title被保存到unmount的时机
+// export const useDocumentTitle = (title: string, keepOnUnmount: boolean = true) => {
+//   const oldTitle = document.title
+//   console.log('渲染时的title：', oldTitle);
+
+//   useEffect(() => {
+//     document.title = title;
+//   }, [title]);
+//   useEffect(() => {
+//     return () => {
+//       if (!keepOnUnmount) {
+//         console.log('卸载时的title：', oldTitle);
+//         document.title = oldTitle;
+//       }
+//     }
+//   }, []);
+// }
+
 export const useDocumentTitle = (title: string, keepOnUnmount: boolean = true) => {
-  const oldTitle = document.title
-  console.log('渲染时的title：', oldTitle);
+  const oldTitle = useRef(document.title).current;
 
   useEffect(() => {
     document.title = title;
@@ -83,9 +100,8 @@ export const useDocumentTitle = (title: string, keepOnUnmount: boolean = true) =
   useEffect(() => {
     return () => {
       if (!keepOnUnmount) {
-        console.log('卸载时的title：', oldTitle);
         document.title = oldTitle;
       }
     }
-  }, []);
+  }, [keepOnUnmount, oldTitle]);
 }

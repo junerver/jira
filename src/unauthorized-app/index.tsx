@@ -16,7 +16,7 @@ export const UnauthorizedApp = () => {
         setIsRegister(!isRegister)
         setError(null)
     }
-    useDocumentTitle('请登录或注册', false)
+    // useDocumentTitle('请登录或注册', false)
     return (
         <Container>
             <Header />
