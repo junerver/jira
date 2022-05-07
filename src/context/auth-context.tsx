@@ -3,6 +3,8 @@ import * as auth from 'auth-provider'
 import { User } from 'screens/project-list/search-panel'
 import { http } from 'utils/http'
 import { useMount } from 'utils'
+import { useAsync } from 'utils/use-async'
+import { FullPageError, FullPageLoading } from 'components/lib'
 
 //声明登录注册使用的关键对象
 interface AuthForm {
@@ -34,8 +36,8 @@ AuthContext.displayName = 'AuthContext'
 
 //暴露AuthProvider组件
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-    //由Context保存的全局User状态
-    const [user, setUser] = useState<User | null>(null)
+    const { data: user, error, isLoading, isIdle, isError, run, setData: setUser } = useAsync<User | null>()
+
     //暴露给全局组件使用的登录、注册、退出方法
     //全部变成promise
     const login = (form: AuthForm) => auth.login(form).then(user => setUser(user))
@@ -44,8 +46,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const logout = () => auth.logout().then(() => setUser(null))
     //挂载时获取用户信息
     useMount(() => {
-        bootstrapUser().then(setUser)
+        run(bootstrapUser())
     })
+    if (isIdle || isLoading) {
+        //显示loading
+        return <FullPageLoading />
+    }
+
+    if (isError) {
+        //显示错误
+        return <FullPageError error={error} />
+    }
+
     //通过value属性赋值给context
     return <AuthContext.Provider children={children} value={{ user, login, register, logout }} />
 }

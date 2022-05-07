@@ -29,7 +29,7 @@ export const login = (data: { username: string, password: string }) => {
             return handleUserResponse(await res.json());
         } else {
             // throw new Error('Login failed');
-            return Promise.reject('Login failed')
+            return Promise.reject(await res.json())
         }
     });
 }
@@ -48,7 +48,7 @@ export const register = (data: { username: string, password: string }) => {
         if (res.ok) {
             return handleUserResponse(await res.json());
         } else {
-            return Promise.reject('Register failed')
+            return Promise.reject(await res.json())
         }
     });
 }

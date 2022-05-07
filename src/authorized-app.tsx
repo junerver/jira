@@ -7,31 +7,32 @@ import { Button, Dropdown, Menu } from "antd";
 
 export const AuthorizedApp = () => {
     const { logout, user } = useAuth()
-    return (<Container>
-        <Header between={true}>
-            <HeaderLeft gap={true}>
-                <SoftwareLogo width={'18rem'} color={'rgb(38,132,255)'} />
-                <h3>项目</h3>
-                <h3>用户</h3>
-            </HeaderLeft>
-            <HeaderRight>
-                <Dropdown overlay={(
-                    <Menu>
-                        <Menu.Item key='logout'>
-                            <Button type="link" onClick={() => logout()}>退出</Button>
-                        </Menu.Item>
-                    </Menu>
-                )}>
-                    <Button type="link" onClick={e => e.preventDefault()}>Hi,{user?.name}</Button>
+    return (
+        <Container>
+            <Header between={true}>
+                <HeaderLeft gap={true}>
+                    <SoftwareLogo width={'18rem'} color={'rgb(38,132,255)'} />
+                    <h3>项目</h3>
+                    <h3>用户</h3>
+                </HeaderLeft>
+                <HeaderRight>
+                    <Dropdown overlay={(
+                        <Menu>
+                            <Menu.Item key='logout'>
+                                <Button type="link" onClick={() => logout()}>退出</Button>
+                            </Menu.Item>
+                        </Menu>
+                    )}>
+                        <Button type="link" onClick={e => e.preventDefault()}>Hi,{user?.name}</Button>
 
-                </Dropdown>
+                    </Dropdown>
 
-            </HeaderRight>
-        </Header>
-        <Main>
-            <ProjectListScreen />
-        </Main>
-    </Container>);
+                </HeaderRight>
+            </Header>
+            <Main>
+                <ProjectListScreen />
+            </Main>
+        </Container>);
 }
 
 //使用grid作为布局系统

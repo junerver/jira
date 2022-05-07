@@ -1,13 +1,22 @@
 import { useAuth } from 'context/auth-context';
 import { Form, Input, Button } from 'antd';
 import { LongButton } from 'unauthorized-app';
+import { type } from '@testing-library/user-event/dist/type';
+import { useAsync } from 'utils/use-async';
 
-const LoginScreen = () => {
+
+export type OnErrorProps = {
+    onError: (error: Error) => void;
+}
+
+const LoginScreen = ({ onError }: OnErrorProps) => {
     const { login, user } = useAuth()
+
+    const { run, isLoading } = useAsync()
     //根据 Form.Item的name决定的这个values是什么
     const handleSubmit = (values: { username: string, password: string }) => {
         const { username, password } = values
-        login({ username, password })
+        run(login({ username, password }).catch(onError))
     }
 
     return (
@@ -20,7 +29,7 @@ const LoginScreen = () => {
                 <Input placeholder='密码' type="password" id="password" />
             </Form.Item>
             <Form.Item>
-                <LongButton htmlType='submit' type='primary'>登录</LongButton>
+                <LongButton loading={isLoading} htmlType='submit' type='primary'>登录</LongButton>
             </Form.Item>
         </Form>
     )

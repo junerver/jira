@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import React, { PropsWithChildren } from 'react'
 import { User } from './search-panel';
 
-type Project = {
+export type Project = {
     id: string,
     name: string,
     personId: string,
