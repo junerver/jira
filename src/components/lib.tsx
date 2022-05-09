@@ -32,6 +32,10 @@ export const CenterLinkButton = styled(Button)`
     align-items: center;
 `
 
+export const ButtonNoPadding = styled(Button)`
+    padding: 0;
+    `
+
 
 const FullPage = styled.div`
 height: 100vh;

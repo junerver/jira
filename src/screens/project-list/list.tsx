@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
-import { Table, TableProps } from 'antd';
+import { Dropdown, Menu, Table, TableProps } from 'antd';
+import { ButtonNoPadding } from 'components/lib';
 import { Pin } from 'components/pin';
 import dayjs from 'dayjs';
 import React, { PropsWithChildren } from 'react'
@@ -19,6 +20,7 @@ export type Project = {
 type ListProps = {
     users: User[];
     refresh: () => void;
+    setProjectModalOpen: (isOpen: boolean) => void
 } & TableProps<Project>
 
 const List: React.FC<PropsWithChildren<ListProps>> = ({ users, ...props }) => {
@@ -67,7 +69,22 @@ const List: React.FC<PropsWithChildren<ListProps>> = ({ users, ...props }) => {
                             {project.created ? dayjs(project.created).format("YYYY-MM-DD") : '未知时间'}
                         </span>
                     },
-                },]} />
+                },
+                {
+                    render(_, project) {
+                        return <Dropdown overlay={
+                            <Menu>
+                                <Menu.Item key={'edit'}>
+                                    <ButtonNoPadding type='link' onClick={() => props.setProjectModalOpen(true)}>编辑</ButtonNoPadding>
+                                </Menu.Item>
+                            </Menu>
+                        }>
+                            <ButtonNoPadding type='link'>...</ButtonNoPadding>
+                        </Dropdown>
+                    }
+                }
+
+            ]} />
     )
 }
 
