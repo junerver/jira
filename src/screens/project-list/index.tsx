@@ -1,25 +1,22 @@
 import React, { useEffect, useState } from "react";
 import List, { Project } from "./list";
-import SearchPanel, { SearchParams, User } from "./search-panel";
+import SearchPanel, { User } from "./search-panel";
 import { cleanObject, useDebounce, useDocumentTitle, useMount } from "../../utils";
 import qs from "qs";
 import { useHttp } from "utils/http";
 import styled from "@emotion/styled";
 import { Typography } from "antd";
 import { useAsync } from "utils/use-async";
-import { Helmet } from "react-helmet";
-import { useUrlQueryParam } from "utils/url";
+import { useProjectsSearchParams } from "./util";
 
 const ProjectListScreen = () => {
+  useDocumentTitle('项目列表', false)
 
   //要查找的内容，一个是输入框键入的name，一个是select选择的人的id
-
-  const [param, setParam] = useUrlQueryParam(['name', 'personId']);
-  const debounceParam = useDebounce(param, 500);
-
-  const { isLoading, error, data: list } = useProjects(debounceParam)
+  const [param, setParam] = useProjectsSearchParams()
+  const { isLoading, error, data: list } = useProjects(useDebounce(param, 500))
   const { data: users } = useUser()
-  useDocumentTitle('项目列表', false)
+
   return (
     <Container>
 

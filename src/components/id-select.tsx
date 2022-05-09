@@ -22,7 +22,8 @@ export const IdSelect = (props: IdSelectProps) => {
     return (
         <Select
             {...restProps}
-            value={toNumber(value)}
+            //当没有获取到options时，使用默认的option，即传入0显示defaultOptionName
+            value={options?.length ? toNumber(value) : 0}
             onChange={value => onChange(toNumber(value) || undefined)}>
             {defaultOptionName && <Select.Option value={0}>{defaultOptionName}</Select.Option>}
             {options && options.map(({ name, id }) => (

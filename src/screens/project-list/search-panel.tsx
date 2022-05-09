@@ -1,13 +1,12 @@
 import styled from "@emotion/styled";
 import { Form, Input, Select } from "antd";
+import { UserSelect } from "components/user-select";
 import React, { PropsWithChildren } from "react";
+import { Project } from "./list";
 
-export type SearchParams = {
-    name?: string;
-    personId?: string;
-}
+
 export type User = {
-    id: string;
+    id: number;
     name: string;
     email: string;
     title: string;
@@ -16,9 +15,9 @@ export type User = {
 }
 
 type SearchPanelProps = {
-    param: SearchParams;
+    param: Partial<Pick<Project, 'name' | 'personId'>>;
     users: User[];
-    setParam: (param: SearchParams) => void;
+    setParam: (param: SearchPanelProps['param']) => void;
 };
 const SearchPanel: React.FC<PropsWithChildren<SearchPanelProps>> = ({ users, param, setParam }) => {
 
@@ -36,18 +35,12 @@ const SearchPanel: React.FC<PropsWithChildren<SearchPanelProps>> = ({ users, par
                     />
                 </Form.Item>
                 <Form.Item>
-                    <Select
+                    <UserSelect
                         value={param.personId}
-                        onChange={(value) => setParam({ ...param, personId: value })}>
-
-                        <Select.Option value="">负责人</Select.Option>
-
-                        {users.map((user: User) => (
-                            <Select.Option key={user.id} value={String(user.id)}>
-                                {user.name}
-                            </Select.Option>
-                        ))}
-                    </Select>
+                        onChange={(value) =>
+                            setParam({ ...param, personId: value })}
+                        defaultOptionName="选择负责人"
+                    />
                 </Form.Item>
 
             </Form>
