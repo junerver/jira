@@ -1,8 +1,10 @@
 import { render } from '@testing-library/react';
 import { Table, TableProps } from 'antd';
+import { Pin } from 'components/pin';
 import dayjs from 'dayjs';
 import React, { PropsWithChildren } from 'react'
 import { Link } from 'react-router-dom';
+import { useEditProjects } from 'utils/project';
 import { User } from './search-panel';
 
 export type Project = {
@@ -15,10 +17,14 @@ export type Project = {
 }
 //扩展TableProps，增加users
 type ListProps = {
-    users: User[]
+    users: User[];
+    refresh: () => void;
 } & TableProps<Project>
 
 const List: React.FC<PropsWithChildren<ListProps>> = ({ users, ...props }) => {
+    const { mutate } = useEditProjects()
+    //箭头函数柯里化的简写方式非常优雅
+    const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin }).then(props.refresh)
     return (
         <Table
             //透传 antd的props
@@ -29,6 +35,12 @@ const List: React.FC<PropsWithChildren<ListProps>> = ({ users, ...props }) => {
             pagination={false}
             //渲染的列
             columns={[
+                {
+                    title: <Pin checked={true} disabled={true} />,
+                    render(_, project) {
+                        return <Pin checked={project.pin} onCheckedChange={pinProject(project.id)} />
+                    }
+                },
                 {
                     title: '项目名称',
                     sorter: (a, b) => a.name.localeCompare(b.name),
