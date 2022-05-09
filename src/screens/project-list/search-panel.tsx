@@ -43,7 +43,7 @@ const SearchPanel: React.FC<PropsWithChildren<SearchPanelProps>> = ({ users, par
                         <Select.Option value="">负责人</Select.Option>
 
                         {users.map((user: User) => (
-                            <Select.Option key={user.id} value={user.id}>
+                            <Select.Option key={user.id} value={String(user.id)}>
                                 {user.name}
                             </Select.Option>
                         ))}

@@ -8,14 +8,13 @@ import styled from "@emotion/styled";
 import { Typography } from "antd";
 import { useAsync } from "utils/use-async";
 import { Helmet } from "react-helmet";
+import { useUrlQueryParam } from "utils/url";
 
 const ProjectListScreen = () => {
 
   //要查找的内容，一个是输入框键入的name，一个是select选择的人的id
-  const [param, setParam] = useState<SearchParams>({
-    name: "",
-    personId: "",
-  });
+
+  const [param, setParam] = useUrlQueryParam(['name', 'personId']);
   const debounceParam = useDebounce(param, 500);
 
   const { isLoading, error, data: list } = useProjects(debounceParam)

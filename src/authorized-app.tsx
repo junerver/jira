@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { CenterButton, Row } from "components/lib";
+import { Row } from "components/lib";
 import { useAuth } from "context/auth-context";
 import ProjectListScreen from "screens/project-list";
 import { ReactComponent as SoftwareLogo } from 'assets/software-logo.svg'
@@ -33,9 +33,12 @@ const PageHeader = () => {
     return (
         <Header between={true}>
             <HeaderLeft gap={true}>
-                <CenterButton type="link" onClick={resetRoute}>
+                <Button
+                    style={{ display: 'flex', alignItems: 'center' }}
+                    type="link"
+                    onClick={resetRoute}>
                     <SoftwareLogo width={'18rem'} color={'rgb(38,132,255)'} />
-                </CenterButton>
+                </Button>
 
                 <h3>项目</h3>
                 <h3>用户</h3>

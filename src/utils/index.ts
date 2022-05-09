@@ -2,6 +2,7 @@ import exp from "constants";
 import { useState, useEffect, useRef } from "react";
 // export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
 export const isVoid = (value: unknown) => value === undefined || value === null || value === "";
+export const isNullOrUndefined = (value: unknown) => value === undefined || value === null;
 
 //在js中函数传入对象是一个不好的方式，因为函数可能会污染对象
 export const cleanObject = (obj?: { [key: string]: unknown }) => {

@@ -26,7 +26,7 @@ export const LongButton = styled(Button)`
     width: 100%;
 `
 
-export const CenterButton = styled(Button)`
+export const CenterLinkButton = styled(Button)`
     display: flex;
     justify-content: center;
     align-items: center;
