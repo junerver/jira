@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useMountedRef } from "utils";
 
 interface State<D> {
@@ -27,23 +27,23 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defa
     });
 
     //设置最终请求结果到data
-    const setData = (data: D) => setState({
+    const setData = useCallback((data: D) => setState({
         data,
         error: null,
         stat: 'success'
-    })
+    }), [setState]);
     //设置状态为error
-    const setError = (error: Error) => setState({
+    const setError = useCallback((error: Error) => setState({
         data: null,
         error,
         stat: 'error'
-    })
+    }), [setState]);
     //保存的组件是否加载完毕还是已经被卸载
     const mountedRef = useMountedRef();
     const [retry, setRetry] = useState(() => () => { })
 
     //run函数用于出发异步请求
-    const run = (promise: Promise<D>, runConfig?: { retry: () => Promise<D> }) => {
+    const run = useCallback((promise: Promise<D>, runConfig?: { retry: () => Promise<D> }) => {
         if (!promise || !promise.then) {
             throw new Error('传入的不是一个promise');
         }
@@ -53,7 +53,8 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defa
             }
         })
         //先设置状态为loading
-        setState({ ...state, stat: 'loading' });
+        //函数式设置可以避免依赖state的问题
+        setState(preState => ({ ...preState, stat: 'loading' }));
         //如果直接catch(setError)，会导致try-catch这种写法无法接收到异常信息，
         //因为在这里异常被消费了，但是then().catch() 这种写法是可以正常运行的
         return promise
@@ -69,7 +70,7 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defa
                 if (config.throwOnError) return Promise.reject(error);
                 return error;
             });
-    }
+    }, [mountedRef, setData, setError, config.throwOnError]);
 
 
     return {
