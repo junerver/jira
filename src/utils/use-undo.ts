@@ -1,32 +1,26 @@
-import { useCallback, useState } from "react"
+import { useCallback, useReducer, useState } from "react"
 
-export const useUndo = <T>(initialPresent: T) => {
-    //聚合的状态有利于提高性能，而且使用useCallback时将无需依赖额外的数据
-    //聚合状态
-    const [state, setState] = useState<{
-        past: T[],
-        present: T,
-        future: T[]
-    }>({
-        //保存过去的操作
-        past: [],
-        //当前操作
-        present: initialPresent,
-        //保存未来操作
-        future: []
-    })
+const UNDO = "UNDO"
+const REDO = "REDO"
+const SET = "SET"
+const RESET = "RESET"
 
-    //是否可以撤销
-    const canUndo = state.past.length !== 0
-    //是否可以重做
-    const canRedo = state.future.length !== 0
+type State<T> = {
+    past: T[],
+    present: T,
+    future: T[]
+}
+type Action<T> = {
+    type: typeof UNDO | typeof REDO | typeof SET | typeof RESET,
+    payload?: T
+}
 
-    //撤销操作
-    const undo = useCallback(() => {
-        setState(preState => {
-            const { past, present, future } = preState
+const undoReducer = <T>(preState: State<T>, action: Action<T>) => {
+    const { past, present, future } = preState
+    const { type, payload } = action
+    switch (type) {
+        case UNDO: {
             if (past.length === 0) return preState
-
             // 取出过去操作中的最后一个操作作为新的present
             const newPresent = past[past.length - 1]
             // 将最后一个操作从past中移除
@@ -38,13 +32,8 @@ export const useUndo = <T>(initialPresent: T) => {
                 //将旧的present放入到future数组的头部
                 future: [present, ...future]
             }
-        })
-    }, [])
-
-    //重做操作
-    const redo = useCallback(() => {
-        setState(preState => {
-            const { past, present, future } = preState
+        }
+        case REDO: {
             if (future.length === 0) return preState
             // 取出第一个future
             const newPresent = future[0]
@@ -55,30 +44,49 @@ export const useUndo = <T>(initialPresent: T) => {
                 present: newPresent,
                 future: newFuture
             }
-        })
-    }, [])
-
-    //传入新值，更新present，将过去的操作放入到past数组的末尾
-    const set = useCallback((newPresent: T) => {
-        setState(preState => {
-            const { past, present, future } = preState
-            if (present === newPresent) return preState
+        }
+        case SET: {
+            if (present === payload) return preState
             return {
                 past: [...past, present],
-                present: newPresent,
+                present: payload,
                 future: []
             }
-        })
-    }, [])
+        }
+        case RESET: {
+            return {
+                past: [],
+                present: payload,
+                future: []
+            }
+        }
+        default: return preState
+    }
+}
+
+export const useUndo = <T>(initialPresent: T) => {
+    const [state, dispatch] = useReducer(undoReducer, {
+        past: [],
+        present: initialPresent,
+        future: []
+    } as State<T>)
+
+    //是否可以撤销
+    const canUndo = state.past.length !== 0
+    //是否可以重做
+    const canRedo = state.future.length !== 0
+
+    //撤销操作
+    const undo = useCallback(() => dispatch({ type: UNDO }), [])
+
+    //重做操作
+    const redo = useCallback(() => dispatch({ type: REDO }), [])
+
+    //传入新值，更新present，将过去的操作放入到past数组的末尾
+    const set = useCallback((newPresent: T) => dispatch({ type: SET, payload: newPresent }), [])
 
     //使用新传入的值替换present，并将撤销和重做清空
-    const reset = useCallback((newPresent: T) => {
-        setState({
-            past: [],
-            present: newPresent,
-            future: []
-        })
-    }, [])
+    const reset = useCallback((newPresent: T) => dispatch({ type: RESET, payload: newPresent }), [])
 
     return [
         state,
