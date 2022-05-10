@@ -4,8 +4,10 @@ import { ButtonNoPadding } from 'components/lib';
 import { Pin } from 'components/pin';
 import dayjs from 'dayjs';
 import React, { PropsWithChildren } from 'react'
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useEditProjects } from 'utils/project';
+import { projectListActions } from './project-list.slice';
 import { User } from './search-panel';
 
 export type Project = {
@@ -20,10 +22,10 @@ export type Project = {
 type ListProps = {
     users: User[];
     refresh: () => void;
-    setProjectModalOpen: (isOpen: boolean) => void
 } & TableProps<Project>
 
 const List: React.FC<PropsWithChildren<ListProps>> = ({ users, ...props }) => {
+    const dispatch = useDispatch();
     const { mutate } = useEditProjects()
     //箭头函数柯里化的简写方式非常优雅
     const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin }).then(props.refresh)
@@ -75,7 +77,7 @@ const List: React.FC<PropsWithChildren<ListProps>> = ({ users, ...props }) => {
                         return <Dropdown overlay={
                             <Menu>
                                 <Menu.Item key={'edit'}>
-                                    <ButtonNoPadding type='link' onClick={() => props.setProjectModalOpen(true)}>编辑</ButtonNoPadding>
+                                    <ButtonNoPadding type='link' onClick={() => dispatch(projectListActions.openProjectModal())}>编辑</ButtonNoPadding>
                                 </Menu.Item>
                             </Menu>
                         }>

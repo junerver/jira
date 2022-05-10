@@ -1,10 +1,13 @@
 import styled from '@emotion/styled'
 import { Button, Divider, List, Popover, Typography } from 'antd'
 import React from 'react'
+import { useDispatch } from 'react-redux'
+import { projectListActions } from 'screens/project-list/project-list.slice'
 import { useProjects } from 'utils/project'
 import { ButtonNoPadding } from './lib'
 
-export const ProjectPopover = ({ setProjectModalOpen }: { setProjectModalOpen: (isOpen: boolean) => void }) => {
+export const ProjectPopover = () => {
+    const dispatch = useDispatch()
     //获取全部项目
     const { data: projects, isLoading } = useProjects()
     //筛选pin为true的项目
@@ -22,7 +25,7 @@ export const ProjectPopover = ({ setProjectModalOpen }: { setProjectModalOpen: (
             }
         </List>
         <Divider />
-        <ButtonNoPadding type='link' onClick={() => setProjectModalOpen(true)}>创建项目</ButtonNoPadding>
+        <ButtonNoPadding type='link' onClick={() => dispatch(projectListActions.openProjectModal())}>创建项目</ButtonNoPadding>
     </Container>
     return (
         <Popover

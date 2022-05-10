@@ -13,26 +13,22 @@ import { ProjectModal } from "screens/project-list/project-modal";
 import { ProjectPopover } from "components/project-popover";
 
 export const AuthorizedApp = () => {
-
-    //控制模态的显示还是隐藏
-    const [projectModalOpen, setProjectModalOpen] = useState(false)
-
     return (
         <Container>
-            <PageHeader setProjectModalOpen={setProjectModalOpen} />
+            <PageHeader />
             <Main>
                 <Routes>
                     {/* 项目列表 */}
                     <Route index element={<Navigate to="/projects" />} />
-                    <Route path="/projects" element={<ProjectListScreen setProjectModalOpen={setProjectModalOpen} />} />
+                    <Route path="/projects" element={<ProjectListScreen />} />
                     <Route path="/projects/:projectId/*" element={<ProjectScreen />} />
                 </Routes>
             </Main>
-            <ProjectModal projectModalOpen={projectModalOpen} onClose={() => setProjectModalOpen(false)} />
+            <ProjectModal />
         </Container>);
 }
 
-const PageHeader = ({ setProjectModalOpen }: { setProjectModalOpen: (isOpen: boolean) => void }) => {
+const PageHeader = () => {
 
     return (
         <Header between={true}>
@@ -43,7 +39,7 @@ const PageHeader = ({ setProjectModalOpen }: { setProjectModalOpen: (isOpen: boo
                     onClick={resetRoute}>
                     <SoftwareLogo width={'18rem'} color={'rgb(38,132,255)'} />
                 </Button>
-                <ProjectPopover setProjectModalOpen={setProjectModalOpen} />
+                <ProjectPopover />
                 <span>用户</span>
             </HeaderLeft>
             <HeaderRight>
