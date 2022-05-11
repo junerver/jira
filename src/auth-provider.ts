@@ -1,4 +1,4 @@
-import { User } from "./screens/project-list/search-panel";
+import { User } from 'types/user';
 
 //localStorage 中用于保存token的key
 const localStorageKey = '__auth_provider_token__';
