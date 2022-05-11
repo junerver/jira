@@ -7,6 +7,7 @@ import React, { PropsWithChildren } from 'react'
 import { Link } from 'react-router-dom';
 import { useEditProjects } from 'utils/project';
 import { User } from './search-panel';
+import { useProjectModal } from './util';
 
 export type Project = {
     id: number,
@@ -20,13 +21,13 @@ export type Project = {
 type ListProps = {
     users: User[];
     refresh: () => void;
-    setProjectModalOpen: (isOpen: boolean) => void
 } & TableProps<Project>
 
 const List: React.FC<PropsWithChildren<ListProps>> = ({ users, ...props }) => {
     const { mutate } = useEditProjects()
     //箭头函数柯里化的简写方式非常优雅
     const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin }).then(props.refresh)
+    const { open } = useProjectModal()
     return (
         <Table
             //透传 antd的props
@@ -75,7 +76,7 @@ const List: React.FC<PropsWithChildren<ListProps>> = ({ users, ...props }) => {
                         return <Dropdown overlay={
                             <Menu>
                                 <Menu.Item key={'edit'}>
-                                    <ButtonNoPadding type='link' onClick={() => props.setProjectModalOpen(true)}>编辑</ButtonNoPadding>
+                                    <ButtonNoPadding type='link' onClick={() => open()}>编辑</ButtonNoPadding>
                                 </Menu.Item>
                             </Menu>
                         }>
