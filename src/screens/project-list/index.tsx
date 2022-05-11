@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import List from "./list";
 import { Project } from "../../types/project";
-import SearchPanel, { User } from "./search-panel";
+import SearchPanel from "./search-panel";
+import { User } from 'types/user'
 import { cleanObject, useDebounce, useDocumentTitle, useMount } from "../../utils";
 import qs from "qs";
 import { useHttp } from "utils/http";

@@ -1,10 +1,10 @@
-import { useCallback, useEffect } from "react";
-import { QueryKey, useMutation, useQuery, useQueryClient } from "react-query";
+
+import { QueryKey, useMutation, useQuery } from "react-query";
 import { Project } from "types/project";
-import { useProjectsSearchParams } from "screens/project-list/util";
+
 import { cleanObject } from "utils";
 import { useHttp } from "./http";
-import { useAsync } from "./use-async";
+
 import { useAddConfig, useDeleteConfig, useEditConfig } from "./use-optimistic-options";
 
 //用于搜索项目的自定义钩子

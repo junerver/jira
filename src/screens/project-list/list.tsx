@@ -6,7 +6,7 @@ import React, { PropsWithChildren } from 'react'
 import { Link } from 'react-router-dom';
 import { useDeleteProject, useEditProject } from 'utils/project';
 import { Project } from '../../types/project';
-import { User } from './search-panel';
+import { User } from 'types/user';
 import { useProjectModal, useProjectsQueryKey } from './util';
 
 //扩展TableProps，增加users

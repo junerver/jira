@@ -2,17 +2,9 @@ import styled from "@emotion/styled";
 import { Form, Input, Select } from "antd";
 import { UserSelect } from "components/user-select";
 import React, { PropsWithChildren } from "react";
+import { User } from "types/user";
 import { Project } from "../../types/project";
 
-
-export type User = {
-    id: number;
-    name: string;
-    email: string;
-    title: string;
-    organization: string;
-    token: string;
-}
 
 type SearchPanelProps = {
     param: Partial<Pick<Project, 'name' | 'personId'>>;
