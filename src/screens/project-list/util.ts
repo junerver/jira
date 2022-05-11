@@ -12,6 +12,11 @@ export const useProjectsSearchParams = () => {
     ] as const
 }
 
+export const useProjectsQueryKey = () => {
+    const [searchParams] = useProjectsSearchParams()
+    return ['projects', searchParams]
+}
+
 //用于编辑项目的自定义钩子，可以打开模态窗口编辑项目内容
 export const useProjectModal = () => {
     const [{ projectCreate }, setProjectModalOpen] = useUrlQueryParam([

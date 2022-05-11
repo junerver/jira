@@ -1,12 +1,12 @@
-import { Dropdown, Menu, Table, TableProps } from 'antd';
+import { Dropdown, Menu, Modal, Table, TableProps } from 'antd';
 import { ButtonNoPadding } from 'components/lib';
 import { Pin } from 'components/pin';
 import dayjs from 'dayjs';
 import React, { PropsWithChildren } from 'react'
 import { Link } from 'react-router-dom';
-import { useEditProject } from 'utils/project';
+import { useDeleteProject, useEditProject } from 'utils/project';
 import { User } from './search-panel';
-import { useProjectModal } from './util';
+import { useProjectModal, useProjectsQueryKey } from './util';
 
 export type Project = {
     id: number,
@@ -22,11 +22,11 @@ type ListProps = {
 } & TableProps<Project>
 
 const List: React.FC<PropsWithChildren<ListProps>> = ({ users, ...props }) => {
-    const { mutate } = useEditProject()
-    const { startEdit } = useProjectModal()
+    const { mutate } = useEditProject(useProjectsQueryKey())
+
     //箭头函数柯里化的简写方式非常优雅
     const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin })
-    const editProject = (id: number) => () => startEdit(id)
+
     return (
         <Table
             //透传 antd的props
@@ -72,23 +72,7 @@ const List: React.FC<PropsWithChildren<ListProps>> = ({ users, ...props }) => {
                 },
                 {
                     render(_, project) {
-                        return <Dropdown overlay={
-                            <Menu
-                                items={[
-                                    {
-                                        key: 'edit',
-                                        label: '编辑',
-                                        onClick: editProject(project.id)
-                                    }, {
-                                        key: 'delete',
-                                        label: '删除',
-                                        onClick: () => { }
-                                    }
-                                ]} />
-
-                        }>
-                            <ButtonNoPadding type='link'>...</ButtonNoPadding>
-                        </Dropdown>
+                        return <More project={project} />
                     }
                 }
 
@@ -97,3 +81,38 @@ const List: React.FC<PropsWithChildren<ListProps>> = ({ users, ...props }) => {
 }
 
 export default List
+
+const More = ({ project }: { project: Project }) => {
+    const { startEdit } = useProjectModal()
+    const editProject = (id: number) => () => startEdit(id)
+    const { mutate: deleteProject } = useDeleteProject(useProjectsQueryKey())
+    const confirmDeleteProject = (id: number) => () => {
+        Modal.confirm({
+            title: '确认删除',
+            content: '确认删除该项目吗？',
+            okText: '确认',
+            cancelText: '取消',
+            onOk: () => {
+                deleteProject({ id })
+            }
+        })
+    }
+    return <Dropdown overlay={
+        <Menu
+            items={[
+                {
+                    key: 'edit',
+                    label: '编辑',
+                    onClick: editProject(project.id)
+                }, {
+                    key: 'delete',
+                    label: '删除',
+                    onClick: confirmDeleteProject(project.id)
+                }
+            ]} />
+
+    }>
+        <ButtonNoPadding type='link'>...</ButtonNoPadding>
+    </Dropdown>
+
+}
