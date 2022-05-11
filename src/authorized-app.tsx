@@ -32,6 +32,7 @@ export const AuthorizedApp = () => {
         </Container>);
 }
 
+//页头
 const PageHeader = () => {
 
     return (
@@ -53,6 +54,7 @@ const PageHeader = () => {
     )
 }
 
+//页头右侧用户
 const User = () => {
     const { logout, user } = useAuth()
     return (
