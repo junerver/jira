@@ -7,7 +7,7 @@ import React, { PropsWithChildren } from 'react'
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useEditProjects } from 'utils/project';
-import { projectListActions } from './project-list.slice';
+import { openProjectModal } from './project-list.slice';
 import { User } from './search-panel';
 
 export type Project = {
@@ -77,7 +77,7 @@ const List: React.FC<PropsWithChildren<ListProps>> = ({ users, ...props }) => {
                         return <Dropdown overlay={
                             <Menu>
                                 <Menu.Item key={'edit'}>
-                                    <ButtonNoPadding type='link' onClick={() => dispatch(projectListActions.openProjectModal())}>编辑</ButtonNoPadding>
+                                    <ButtonNoPadding type='link' onClick={() => dispatch(openProjectModal())}>编辑</ButtonNoPadding>
                                 </Menu.Item>
                             </Menu>
                         }>

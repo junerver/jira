@@ -1,17 +1,19 @@
 import { Button, Drawer } from 'antd'
-import { useDispatch, useSelector } from 'react-redux'
-import { projectListActions, selectProjectModalOpen } from './project-list.slice'
+import { useSelector } from 'react-redux'
+import { useAppDispatch } from 'store'
+
+import { closeProjectModal, selectProjectModalOpen } from './project-list.slice'
 
 export const ProjectModal = () => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const projectModalOpen = useSelector(selectProjectModalOpen)
     return (
         <Drawer
-            onClose={() => dispatch(projectListActions.closeProjectModal())}
+            onClose={() => dispatch(closeProjectModal())}
             visible={projectModalOpen}
             width={'100%'}>
             <h1>Project Modal</h1>
-            <Button type='primary' onClick={() => dispatch(projectListActions.closeProjectModal())} >关闭</Button>
+            <Button type='primary' onClick={() => dispatch(closeProjectModal())} >关闭</Button>
         </Drawer>
     )
 }

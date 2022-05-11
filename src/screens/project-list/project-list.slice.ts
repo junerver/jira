@@ -1,14 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "store";
 
+//状态类型
 interface State {
     projectModalOpen: boolean;
 }
-
+//初始状态
 const initialState: State = {
     projectModalOpen: false
 }
-
+//模板代码，创建slice
 export const projectListSlice = createSlice({
     name: 'projectListSlice',
     initialState,
@@ -26,7 +27,9 @@ export const projectListSlice = createSlice({
     }
 })
 
+//默认暴露reducer
+export default projectListSlice.reducer;
 //暴露action
-export const projectListActions = projectListSlice.actions;
+export const { openProjectModal, closeProjectModal } = projectListSlice.actions;
 //暴露对应的selector
 export const selectProjectModalOpen = (state: RootState) => state.projectList.projectModalOpen;
