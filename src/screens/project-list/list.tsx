@@ -1,11 +1,10 @@
-import { render } from '@testing-library/react';
 import { Dropdown, Menu, Table, TableProps } from 'antd';
 import { ButtonNoPadding } from 'components/lib';
 import { Pin } from 'components/pin';
 import dayjs from 'dayjs';
 import React, { PropsWithChildren } from 'react'
 import { Link } from 'react-router-dom';
-import { useEditProjects } from 'utils/project';
+import { useEditProject } from 'utils/project';
 import { User } from './search-panel';
 import { useProjectModal } from './util';
 
@@ -20,14 +19,14 @@ export type Project = {
 //扩展TableProps，增加users
 type ListProps = {
     users: User[];
-    refresh: () => void;
 } & TableProps<Project>
 
 const List: React.FC<PropsWithChildren<ListProps>> = ({ users, ...props }) => {
-    const { mutate } = useEditProjects()
+    const { mutate } = useEditProject()
+    const { startEdit } = useProjectModal()
     //箭头函数柯里化的简写方式非常优雅
-    const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin }).then(props.refresh)
-    const { open } = useProjectModal()
+    const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin })
+    const editProject = (id: number) => () => startEdit(id)
     return (
         <Table
             //透传 antd的props
@@ -74,11 +73,19 @@ const List: React.FC<PropsWithChildren<ListProps>> = ({ users, ...props }) => {
                 {
                     render(_, project) {
                         return <Dropdown overlay={
-                            <Menu>
-                                <Menu.Item key={'edit'}>
-                                    <ButtonNoPadding type='link' onClick={() => open()}>编辑</ButtonNoPadding>
-                                </Menu.Item>
-                            </Menu>
+                            <Menu
+                                items={[
+                                    {
+                                        key: 'edit',
+                                        label: '编辑',
+                                        onClick: editProject(project.id)
+                                    }, {
+                                        key: 'delete',
+                                        label: '删除',
+                                        onClick: () => { }
+                                    }
+                                ]} />
+
                         }>
                             <ButtonNoPadding type='link'>...</ButtonNoPadding>
                         </Dropdown>

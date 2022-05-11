@@ -57,10 +57,14 @@ const User = () => {
     const { logout, user } = useAuth()
     return (
         <Dropdown overlay={(
-            <Menu>
-                <Menu.Item key='logout'>
-                    <Button type="link" onClick={() => logout()}>退出</Button>
-                </Menu.Item>
+            <Menu
+                items={[
+                    {
+                        key: 'logout',
+                        label: '退出',
+                        onClick: logout
+                    }
+                ]}>
             </Menu>
         )}>
             <Button type="link" onClick={e => e.preventDefault()}>Hi,{user?.name}</Button>

@@ -8,8 +8,8 @@ type SelectProps = React.ComponentProps<typeof Select>
 
 //注意移除原有的相同key
 interface IdSelectProps extends Omit<SelectProps, 'value' | 'onChange' | 'options'> {
-    value: Raw | null | undefined;
-    onChange: (value?: number) => void
+    value?: Raw | null | undefined;
+    onChange?: (value?: number) => void
     defaultOptionName?: string;
     options?: { name: string, id: number }[]
 
@@ -24,7 +24,7 @@ export const IdSelect = (props: IdSelectProps) => {
             {...restProps}
             //当没有获取到options时，使用默认的option，即传入0显示defaultOptionName
             value={options?.length ? toNumber(value) : 0}
-            onChange={value => onChange(toNumber(value) || undefined)}>
+            onChange={value => onChange?.(toNumber(value) || undefined)}>
             {defaultOptionName && <Select.Option value={0}>{defaultOptionName}</Select.Option>}
             {options && options.map(({ name, id }) => (
                 <Select.Option key={id} value={id}>{name}</Select.Option>

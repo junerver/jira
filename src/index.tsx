@@ -12,12 +12,12 @@ loadServer(() =>
   ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
   ).render(
-    <React.StrictMode>
-      <AppProviders>
-        <DevTools />
-        <App />
-      </AppProviders>
-    </React.StrictMode>
+    // <React.StrictMode>
+    <AppProviders>
+      <DevTools />
+      <App />
+    </AppProviders>
+    // </React.StrictMode>
   ));
 
 // If you want to start measuring performance in your app, pass a function
