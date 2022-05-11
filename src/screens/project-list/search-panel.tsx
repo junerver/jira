@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { Form, Input, Select } from "antd";
 import { UserSelect } from "components/user-select";
 import React, { PropsWithChildren } from "react";
-import { Project } from "./list";
+import { Project } from "../../types/project";
 
 
 export type User = {

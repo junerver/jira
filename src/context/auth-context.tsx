@@ -5,6 +5,7 @@ import { http } from 'utils/http'
 import { useMount } from 'utils'
 import { useAsync } from 'utils/use-async'
 import { FullPageError, FullPageLoading } from 'components/lib'
+import { useQueryClient } from 'react-query'
 
 //声明登录注册使用的关键对象
 interface AuthForm {
@@ -38,12 +39,17 @@ AuthContext.displayName = 'AuthContext'
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const { data: user, error, isLoading, isIdle, isError, run, setData: setUser } = useAsync<User | null>()
 
+    const queryClient = useQueryClient()
     //暴露给全局组件使用的登录、注册、退出方法
     //全部变成promise
     const login = (form: AuthForm) => auth.login(form).then(user => setUser(user))
     //传入参数与后一个单语句的函数传入参数一致的话，可以消参 point free
     const register = (form: AuthForm) => auth.register(form).then(setUser)
-    const logout = () => auth.logout().then(() => setUser(null))
+    const logout = () => auth.logout().then(() => {
+        setUser(null)
+        //用户登出时清空缓存
+        queryClient.clear()
+    })
     //挂载时获取用户信息
     useMount(() => {
         run(bootstrapUser())

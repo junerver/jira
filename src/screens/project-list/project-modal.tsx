@@ -18,6 +18,7 @@ export const ProjectModal = () => {
             })
     }
 
+    //窗口关闭时也需要清空表单
     const closeModal = () => {
         form.resetFields();
         close();

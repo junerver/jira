@@ -23,7 +23,7 @@ export const AuthorizedApp = () => {
             <Main>
                 <Routes>
                     {/* 项目列表 */}
-                    <Route index element={<Navigate to="/projects" />} />
+                    <Route index element={<Navigate to="/projects" replace />} />
                     <Route path="/projects" element={<ProjectListScreen />} />
                     <Route path="/projects/:projectId/*" element={<ProjectScreen />} />
                 </Routes>

@@ -5,17 +5,10 @@ import dayjs from 'dayjs';
 import React, { PropsWithChildren } from 'react'
 import { Link } from 'react-router-dom';
 import { useDeleteProject, useEditProject } from 'utils/project';
+import { Project } from '../../types/project';
 import { User } from './search-panel';
 import { useProjectModal, useProjectsQueryKey } from './util';
 
-export type Project = {
-    id: number,
-    name: string,
-    personId: number,
-    pin: boolean,
-    organization: string,
-    created: number;
-}
 //扩展TableProps，增加users
 type ListProps = {
     users: User[];
