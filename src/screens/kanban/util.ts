@@ -32,4 +32,5 @@ export const useTasksSearchParams = () => {
         name: param.name || undefined
     }), [param, projectId])
 }
-export const useTasksQueryKey = () => ['tasks', useTasksSearchParams]
+//严重 bug，因为没有调用钩子 ，导致不能乐观更新
+export const useTasksQueryKey = () => ['tasks', useTasksSearchParams()]

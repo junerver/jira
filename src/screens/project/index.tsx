@@ -51,6 +51,7 @@ const Container = styled.div`
     display: grid;
     grid-template-columns: 16rem 1fr;
     width: 100%;
+    overflow: hidden;
 `
 
 const Aside = styled.aside`
@@ -62,4 +63,5 @@ flex-direction: column;
 const Main = styled.div`
     box-shadow: -5px 0 5px -5px rgba(0,0,0,0.2);
     display: flex;
+    overflow: hidden;
 `
