@@ -1,5 +1,4 @@
 import { useQuery } from "react-query";
-import { Kanban } from "types/kanban";
 import { Task } from "types/task";
 import { useHttp } from "./http";
 

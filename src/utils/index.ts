@@ -93,7 +93,7 @@ export const useArray = <T>(initialValue: T[]) => {
 //   }, []);
 // }
 
-export const useDocumentTitle = (title: string, keepOnUnmount: boolean = true) => {
+export const useDocumentTitle = (title: string, keepOnUnmount: boolean = false) => {
   const oldTitle = useRef(document.title).current;
 
   useEffect(() => {
@@ -115,13 +115,7 @@ export const resetRoute = () => window.location.href = window.location.origin
  * @param obj
  * @param keys
  */
-export const subset = <
-  O extends { [key in string]: unknown },
-  K extends keyof O
->(
-  obj: O,
-  keys: K[]
-) => {
+export const subset = <O extends { [key in string]: unknown }, K extends keyof O>(obj: O, keys: K[]) => {
   const filteredEntries = Object.entries(obj).filter(([key]) =>
     keys.includes(key as K)
   );

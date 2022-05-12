@@ -10,11 +10,9 @@ export const useUrlQueryParam = <K extends string>(keys: K[]) => {
     return [
         useMemo(
             () => subset(Object.fromEntries(searchParams), stateKeys) as { [key in K]: string },
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-            [searchParams, stateKeys]),
-        (params: Partial<{ [key in K]: unknown }>) => {
-            return setSearchParams(params)
-        }
+            [searchParams, stateKeys]
+        ),
+        (params: Partial<{ [key in K]: unknown }>) => setSearchParams(params)
     ] as const
 }
 
