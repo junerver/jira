@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import { ScreenContainer } from 'components/lib'
 import { useDocumentTitle } from 'utils'
 import { useKanbans } from 'utils/kanban'
 import { KanbanColumn } from './kanban-column'
@@ -11,7 +12,7 @@ export const KanbanScreen = () => {
     const { data: kanbans } = useKanbans(useKanbansSearchParams())
 
     return (
-        <div>
+        <ScreenContainer>
             <h1>{currentProject?.name}看板</h1>
             <SearchPanel />
             <ColumnContainer>
@@ -19,13 +20,13 @@ export const KanbanScreen = () => {
                     kanbans?.map(kanban => (<KanbanColumn kanban={kanban} key={kanban.id} />))
                 }
             </ColumnContainer>
-        </div>
+        </ScreenContainer>
     )
 }
 
 const ColumnContainer = styled.div`
-    display: flex;
-    overflow: hidden;
-    margin-right: 2rem;
-
-`
+  display: flex;
+  overflow-x: scroll;
+  flex: 1;
+  overflow: hidden;
+`;

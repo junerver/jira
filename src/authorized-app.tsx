@@ -78,7 +78,7 @@ const User = () => {
 //使用grid作为布局系统
 const Container = styled.div`
     display: grid;
-    grid-template-rows: 6rem 1fr 6rem;
+    grid-template-rows: 6rem 1fr;
     height: 100vh;
     `
 
@@ -89,4 +89,7 @@ const Header = styled(Row)`
 `
 const HeaderLeft = styled(Row)``
 const HeaderRight = styled.div``
-const Main = styled.main``
+const Main = styled.main`
+    display: flex;
+    overflow: hidden;
+`
