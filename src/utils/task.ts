@@ -25,3 +25,38 @@ export const useAddTask = (queryKey: QueryKey) => {
         useAddConfig(queryKey)
     )
 }
+
+//根据id获取任务
+export const useTask = (id?: number) => {
+    const client = useHttp()
+    return useQuery<Task>(
+        ['task', { id }],
+        () => client(`tasks/${id}`),
+        {
+            enabled: Boolean(id)
+        }
+    )
+}
+
+export const useEditTask = (queryKey: QueryKey) => {
+    const client = useHttp()
+    return useMutation(
+        (param: Partial<Task>) => client(`tasks/${param.id}`, {
+            method: 'PATCH',
+            data: param
+        }),
+        useEditConfig(queryKey)
+    )
+}
+
+//删除项目
+export const useDeleteTask = (queryKey: QueryKey) => {
+    const client = useHttp()
+    return useMutation(
+        ({ id }: { id: number }) => client(
+            `tasks/${id}`, {
+            method: 'DELETE',
+        }),
+        useDeleteConfig(queryKey)
+    )
+}

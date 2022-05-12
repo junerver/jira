@@ -18,7 +18,6 @@ export const ProjectModal = () => {
             })
     }
 
-    //窗口关闭时也需要清空表单
     const closeModal = () => {
         form.resetFields();
         close();
@@ -42,7 +41,11 @@ export const ProjectModal = () => {
                         <>
                             <h1>{title}</h1>
                             <ErrorBox error={error} />
-                            <Form form={form} layout='vertical' style={{ width: '40rem' }} onFinish={onFinish}>
+                            <Form
+                                form={form}
+                                layout='vertical'
+                                style={{ width: '40rem' }}
+                                onFinish={onFinish}>
                                 <Form.Item label="项目名称" name="name" rules={[{ required: true, message: '请输入项目名称' }]}>
                                     <Input placeholder='请输入项目名称' />
                                 </Form.Item>

@@ -1,6 +1,8 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useLocation } from "react-router";
+import { useDebounce } from "utils";
 import { useProject } from "utils/project";
+import { useTask } from "utils/task";
 import { useUrlQueryParam } from "utils/url";
 
 //获取当前路径的id
@@ -23,14 +25,36 @@ export const useTasksSearchParams = () => {
         'processorId',
         'tagId'
     ])
+    const debouncedName = useDebounce(param.name, 200)
     const projectId = useProjectIdInUrl()
     return useMemo(() => ({
         projectId,
         typeId: Number(param.typeId) || undefined,
         processorId: Number(param.processorId) || undefined,
         tagId: Number(param.tagId) || undefined,
-        name: param.name || undefined
-    }), [param, projectId])
+        name: debouncedName || undefined
+    }), [param, projectId, debouncedName])
 }
 //严重 bug，因为没有调用钩子 ，导致不能乐观更新
 export const useTasksQueryKey = () => ['tasks', useTasksSearchParams()]
+
+export const useTaskModal = () => {
+    const [{ editingTaskId }, setEditingTaskId] = useUrlQueryParam(['editingTaskId'])
+    const { data: editingTask, isLoading } = useTask(Number(editingTaskId))
+    const startEdit = useCallback(
+        (id: number) => {
+            setEditingTaskId({ editingTaskId: id })
+        }, [setEditingTaskId]
+    )
+    const close = useCallback(() => {
+        setEditingTaskId({ editingTaskId: '' })
+    }, [setEditingTaskId])
+
+    return {
+        editingTaskId,
+        editingTask,
+        isLoading,
+        startEdit,
+        close
+    }
+}

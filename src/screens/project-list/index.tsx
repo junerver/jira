@@ -40,5 +40,8 @@ const ProjectListScreen = () => {
 export default ProjectListScreen;
 
 const Container = styled.div`
+width: 100%;
+display: flex;
+flex-direction: column;
     padding: 3.2rem;
 `
