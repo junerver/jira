@@ -3,7 +3,7 @@ import { Button, Input, Modal } from 'antd'
 import Form from 'antd/lib/form'
 import { TaskTypeSelect } from 'components/task-type-select'
 import { UserSelect } from 'components/user-select'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useDeleteTask, useEditTask } from 'utils/task'
 import { useTaskModal, useTasksQueryKey } from './util'
 
