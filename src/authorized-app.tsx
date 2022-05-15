@@ -8,15 +8,12 @@ import { Navigate, Route, Routes } from 'react-router'
 import { ProjectScreen } from "screens/project";
 
 import { resetRoute } from "utils";
-import { useState } from "react";
 import { ProjectModal } from "screens/project-list/project-modal";
 import { ProjectPopover } from "components/project-popover";
 
 export const AuthorizedApp = () => {
 
     //控制模态的显示还是隐藏
-
-
     return (
         <Container>
             <PageHeader />
@@ -50,7 +47,7 @@ const PageHeader = () => {
             <HeaderRight>
                 <User />
             </HeaderRight>
-        </Header >
+        </Header>
     )
 }
 
@@ -77,19 +74,19 @@ const User = () => {
 
 //使用grid作为布局系统
 const Container = styled.div`
-    display: grid;
-    grid-template-rows: 6rem 1fr;
-    height: 100vh;
-    `
+  display: grid;
+  grid-template-rows: 6rem 1fr;
+  height: 100vh;
+`
 
 //grid-area 用于为grid区域起名
 const Header = styled(Row)`
-    padding: 3.2rem;
-    box-shadow: 0 0 5px 0 rgba(0,0,0,0.1);
+  padding: 3.2rem;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
 `
 const HeaderLeft = styled(Row)``
 const HeaderRight = styled.div``
 const Main = styled.main`
-    display: flex;
-    overflow: hidden;
+  display: flex;
+  overflow: hidden;
 `

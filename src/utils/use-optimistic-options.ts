@@ -1,4 +1,6 @@
 import { QueryKey, useQueryClient } from "react-query";
+import { reorder } from "./reorder";
+import { Task } from "../types/task";
 
 //备注，我并不认同此处处理乐观更新的抽离方式，这种抽象仅适合数组、列表，
 //如果我们要对一个对象进行乐观更新，并不是刷新列表，而是更新一个对象，
@@ -46,3 +48,18 @@ export const useEditConfig = (queryKey: QueryKey) =>
 
 export const useAddConfig = (queryKey: QueryKey) =>
     useConfig(queryKey, (target, old) => (old ? [...old, target] : []));
+
+//拖动排序的乐观更新
+
+export const useReorderKanbanConfig = (queryKey: QueryKey) =>
+    useConfig(queryKey, (target, old) => reorder({ list: old, ...target }));
+
+export const useReorderTaskConfig = (queryKey: QueryKey) =>
+    useConfig(queryKey, (target, old) => {
+        const orderedList = reorder({ list: old, ...target }) as Task[];
+        return orderedList.map((item) =>
+            item.id === target.fromId
+                ? { ...item, kanbanId: target.toKanbanId }
+                : item
+        );
+    });

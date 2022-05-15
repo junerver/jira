@@ -1,7 +1,8 @@
 import { QueryKey, useMutation, useQuery } from "react-query";
 import { Task } from "types/task";
 import { useHttp } from "./http";
-import { useAddConfig, useDeleteConfig, useEditConfig } from "utils/use-optimistic-options";
+import { useAddConfig, useDeleteConfig, useEditConfig, useReorderTaskConfig } from "utils/use-optimistic-options";
+import { SortProps } from "./kanban";
 
 //用于获取看板的自定义钩子
 export const useTasks = (param?: Partial<Task>) => {
@@ -19,9 +20,9 @@ export const useAddTask = (queryKey: QueryKey) => {
     return useMutation(
         (param: Partial<Task>) => client(
             `tasks`, {
-            method: 'POST',
-            data: param
-        }),
+                method: 'POST',
+                data: param
+            }),
         useAddConfig(queryKey)
     )
 }
@@ -55,8 +56,21 @@ export const useDeleteTask = (queryKey: QueryKey) => {
     return useMutation(
         ({ id }: { id: number }) => client(
             `tasks/${id}`, {
-            method: 'DELETE',
-        }),
+                method: 'DELETE',
+            }),
         useDeleteConfig(queryKey)
+    )
+}
+
+//在拖拽发生后重新排序看板
+export const useReorderTask = (queryKey: QueryKey) => {
+    const client = useHttp()
+    return useMutation(
+        (param: SortProps) => client(
+            `tasks/reorder`, {
+                method: 'POST',
+                data: param
+            }),
+        useReorderTaskConfig(queryKey)
     )
 }

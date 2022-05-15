@@ -11,6 +11,8 @@ import { Task } from "types/task";
 import { Mark } from "components/mark";
 import { useDeleteKanban } from "utils/kanban";
 import { Row } from "components/lib";
+import React from "react";
+import { Drag, Drop, DropChild } from "../../components/drag-and-drop";
 
 
 export const TaskTypeIcon = ({ id }: { id: number }) => {
@@ -41,28 +43,46 @@ const TaskCard = ({ task }: { task: Task }) => {
 }
 
 //任务组
-export const KanbanColumn = ({ kanban }: { kanban: Kanban }) => {
-    const { data: allTask } = useTasks(useTasksSearchParams())
-    const tasks = allTask?.filter(task => task.kanbanId === kanban.id)
+export const KanbanColumn = React.forwardRef<HTMLDivElement, { kanban: Kanban }>(
+    ({ kanban, ...props }: { kanban: Kanban }, ref) => {
+        const { data: allTask } = useTasks(useTasksSearchParams())
+        const tasks = allTask?.filter(task => task.kanbanId === kanban.id)
 
-    return (
-        <Container>
-            <Row between={true}>
-                <h3>{kanban.name}</h3>
-                <More kanban={kanban} />
-            </Row>
+        return (
+            <Container ref={ref} {...props}>
+                <Row between={true}>
+                    <h3>{kanban.name}</h3>
+                    <More kanban={kanban} />
+                </Row>
 
-            <TaskContainer>
-                {
-                    tasks?.map(task => (
-                        <TaskCard task={task} key={task.id} />
-                    ))
-                }
-                <CreateTask kanbanId={kanban.id} />
-            </TaskContainer>
-        </Container>
-    )
-}
+                <TaskContainer>
+                    <Drop
+                        direction={'vertical'}
+                        droppableId={`${kanban.id}`}
+                        type={'ROW'}>
+                        <DropChild
+                            // 此处使用一个minHeight撑起元素，避免盒子没有高度导致不能拖拽放置
+                            style={{ minHeight: '5px' }}
+                        >
+                            {
+                                tasks?.map((task, index) => (
+                                    <Drag
+                                        key={task.id}
+                                        draggableId={`task${task.id}`}
+                                        index={index}>
+                                        <div>
+                                            <TaskCard task={task} />
+                                        </div>
+                                    </Drag>
+                                ))
+                            }
+                        </DropChild>
+                    </Drop>
+                    <CreateTask kanbanId={kanban.id} />
+                </TaskContainer>
+            </Container>
+        )
+    })
 
 const More = ({ kanban }: { kanban: Kanban }) => {
     const { mutateAsync: deleteKanban } = useDeleteKanban(useKanbansQueryKey())
@@ -94,20 +114,20 @@ const More = ({ kanban }: { kanban: Kanban }) => {
 }
 
 export const Container = styled.div`
-    min-width: 27rem;
-    border-radius: 6px;
-    background-color: rgb(244,245,247);
-    display: flex;
-    flex-direction: column;
-    padding: 0.7rem 0.7rem 1rem;
-    margin-right: 1.5rem;
+  min-width: 27rem;
+  border-radius: 6px;
+  background-color: rgb(244, 245, 247);
+  display: flex;
+  flex-direction: column;
+  padding: 0.7rem 0.7rem 1rem;
+  margin-right: 1.5rem;
 `
 
 const TaskContainer = styled.div`
-    overflow: scroll;
-    flex: 1;
-    //不显示滚动条
-    ::-webkit-scrollbar {
-        display: none;
-    }
+  overflow: scroll;
+  flex: 1;
+  //不显示滚动条
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `

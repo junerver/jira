@@ -20,6 +20,7 @@
     "dayjs": "^1.11.1",
     "jira-dev-tool": "^1.6.59",
     "react": "^18.1.0",
+    "react-beautiful-dnd": "^13.1.0",
     "react-dom": "^18.1.0",
     "react-error-overlay": "^6.0.11",
     "react-helmet": "^6.1.0",
@@ -56,6 +57,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-beautiful-dnd": "^13.1.2",
     "json-server": "^0.17.0"
   },
   "msw": {
