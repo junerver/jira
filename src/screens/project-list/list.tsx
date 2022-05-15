@@ -2,7 +2,7 @@ import { Dropdown, Menu, Modal, Table, TableProps } from 'antd';
 import { ButtonNoPadding } from 'components/lib';
 import { Pin } from 'components/pin';
 import dayjs from 'dayjs';
-import React, { PropsWithChildren } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom';
 import { useDeleteProject, useEditProject } from 'utils/project';
 import { Project } from '../../types/project';
@@ -14,7 +14,7 @@ type ListProps = {
     users: User[];
 } & TableProps<Project>
 
-const List: React.FC<PropsWithChildren<ListProps>> = ({ users, ...props }) => {
+const List = React.memo(({ users, ...props }: ListProps) => {
     const { mutate } = useEditProject(useProjectsQueryKey())
 
     //箭头函数柯里化的简写方式非常优雅
@@ -52,7 +52,8 @@ const List: React.FC<PropsWithChildren<ListProps>> = ({ users, ...props }) => {
                 {
                     title: '项目负责人',
                     render(_, project) {
-                        return <span key={project.id}> {users.find(user => user.id === project.personId)?.name || "未知"}</span>
+                        return <span
+                            key={project.id}> {users.find(user => user.id === project.personId)?.name || "未知"}</span>
                     }
                 },
                 {
@@ -71,7 +72,7 @@ const List: React.FC<PropsWithChildren<ListProps>> = ({ users, ...props }) => {
 
             ]} />
     )
-}
+})
 
 export default List
 
