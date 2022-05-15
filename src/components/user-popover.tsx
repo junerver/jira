@@ -2,31 +2,26 @@ import styled from '@emotion/styled'
 import { Divider, List, Popover, Typography } from 'antd'
 import React from 'react'
 import { useProjectModal } from 'screens/project-list/util'
-import { useProjects } from 'utils/project'
-import { ButtonNoPadding } from './lib'
+import { useUsers } from "../utils/user";
 
-export const ProjectPopover = () => {
+export const UserPopover = () => {
     //获取全部项目
-    const { data: projects, isLoading, refetch } = useProjects()
+    const { data: users, isLoading, refetch } = useUsers()
     const { open } = useProjectModal()
-
-    //筛选pin为true的项目
-    const pinnedProjects = projects?.filter(project => project.pin)
 
 
     const content = <Container>
-        <Typography.Text type='secondary'>收藏项目</Typography.Text>
+        <Typography.Text type='secondary'>组员列表</Typography.Text>
         <List>
             {
-                pinnedProjects?.map(project => (
-                    <List.Item key={project.id}>
-                        <List.Item.Meta title={project.name} />
+                users?.map(user => (
+                    <List.Item key={user.id}>
+                        <List.Item.Meta title={user.name} />
                     </List.Item>
                 ))
             }
         </List>
         <Divider />
-        <ButtonNoPadding type='link' onClick={() => open()}>创建项目</ButtonNoPadding>
     </Container>
     return (
         <Popover
@@ -34,7 +29,7 @@ export const ProjectPopover = () => {
             placement='bottom'
             content={content}
         >
-            <span>项目</span>
+            <span>组员</span>
         </Popover>
     )
 }
