@@ -12,7 +12,8 @@ import { ProjectModal } from "screens/project-list/project-modal";
 import { ProjectPopover } from "components/project-popover";
 import { UserPopover } from "./components/user-popover";
 
-export const AuthorizedApp = () => {
+
+const AuthorizedApp = () => {
 
     //控制模态的显示还是隐藏
     return (
@@ -29,6 +30,8 @@ export const AuthorizedApp = () => {
             <ProjectModal />
         </Container>);
 }
+
+export default AuthorizedApp;
 
 //页头
 const PageHeader = () => {
