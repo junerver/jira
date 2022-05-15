@@ -92,9 +92,7 @@ const More = ({ kanban }: { kanban: Kanban }) => {
             content: '确认删除该项目吗？',
             okText: '确认',
             cancelText: '取消',
-            onOk: () => {
-                deleteKanban({ id: kanban.id })
-            }
+            onOk: () => deleteKanban({ id: kanban.id })
         })
     }
     const overlay = (
