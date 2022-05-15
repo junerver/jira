@@ -34,7 +34,7 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "test": "craco test",
+    "test": "react-scripts test",
     "eject": "react-scripts eject",
     "json-server": "json-server ./__json_server_mock__/db.json --watch --port 3001 --middlewares ./__json_server_mock__/middleware.js"
   },
@@ -57,8 +57,10 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/react-hooks": "^8.0.0",
     "@types/react-beautiful-dnd": "^13.1.2",
-    "json-server": "^0.17.0"
+    "json-server": "^0.17.0",
+    "msw": "^0.39.2"
   },
   "msw": {
     "workerDirectory": "public"
