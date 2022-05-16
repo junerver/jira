@@ -1,7 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 // export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
-export const isVoid = (value: unknown) => value === undefined || value === null || value === "";
-export const isNullOrUndefined = (value: unknown) => value === undefined || value === null;
+export const isVoid = (value: unknown) =>
+  value === undefined || value === null || value === "";
+export const isNullOrUndefined = (value: unknown) =>
+  value === undefined || value === null;
 
 //在js中函数传入对象是一个不好的方式，因为函数可能会污染对象
 export const cleanObject = (obj?: { [key: string]: unknown }) => {
@@ -46,6 +48,7 @@ export const useMount = (callback: () => void) => {
 // log();
 
 //将一个抖动的state传入，返回一个去抖的state
+//注意，18之后官方出品了 useDeferredValue 效果完全一致
 export const useDebounce = <T>(value: T, delay?: number) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
   useEffect(() => {
@@ -67,12 +70,12 @@ export const useArray = <T>(initialValue: T[]) => {
   };
   const clear = () => {
     setValue([]);
-  }
+  };
   const remove = (index: number) => {
     setValue(value.filter((_, i) => i !== index));
   };
   return { value, clear, add, remove };
-}
+};
 
 //实现方式1，通过闭包实现了保存了旧的title被保存到unmount的时机
 // export const useDocumentTitle = (title: string, keepOnUnmount: boolean = true) => {
@@ -92,7 +95,10 @@ export const useArray = <T>(initialValue: T[]) => {
 //   }, []);
 // }
 
-export const useDocumentTitle = (title: string, keepOnUnmount: boolean = false) => {
+export const useDocumentTitle = (
+  title: string,
+  keepOnUnmount: boolean = false
+) => {
   const oldTitle = useRef(document.title).current;
 
   useEffect(() => {
@@ -103,18 +109,24 @@ export const useDocumentTitle = (title: string, keepOnUnmount: boolean = false) 
       if (!keepOnUnmount) {
         document.title = oldTitle;
       }
-    }
+    };
   }, [keepOnUnmount, oldTitle]);
-}
+};
 
-export const resetRoute = () => window.location.href = window.location.origin
+export const resetRoute = () => (window.location.href = window.location.origin);
 
 /**
  * 传入一个对象，和键集合，返回对应的对象中的键值对
  * @param obj
  * @param keys
  */
-export const subset = <O extends { [key in string]: unknown }, K extends keyof O>(obj: O, keys: K[]) => {
+export const subset = <
+  O extends { [key in string]: unknown },
+  K extends keyof O
+>(
+  obj: O,
+  keys: K[]
+) => {
   const filteredEntries = Object.entries(obj).filter(([key]) =>
     keys.includes(key as K)
   );
